@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  php:
+    build: .
+    volumes:
+      - ./:/var/www/html
+      - /var/log/apache2/app:/var/log/apache2/
+    ports:
+      - 8080:80
+
+  db:
+    image: mysql
+    container_name: slim4-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: slim4-phpmyadmin
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "8081:80"
